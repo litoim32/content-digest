@@ -110,6 +110,7 @@ All run from the **repo root** (they pass through to `app/`):
 - [005-auto-refresh](docs/retrospectives/005-auto-refresh.md) — 60s self-refresh keeping prior data on screen; split state fields over a union; pure `formatClock` unit-tested.
 - [006-pause-on-hidden](docs/retrospectives/006-pause-on-hidden.md) — pause polling on hidden tab via Page Visibility API; resume with immediate fetch; centralized interval start/stop.
 - [007-resilient-chart-loading](docs/retrospectives/007-resilient-chart-loading.md) — diagnosed chart 429s; added cache + backoff retry + `HttpError` + opt-in demo key. External rate limit, not a render bug.
+- [008-playful-theme](docs/retrospectives/008-playful-theme.md) — cheerful theme (fonts, gradient bg, badge/pill colors); rewrote leftover template `index.css`; change colour moved to `is-up`/`is-down` classes.
 
 ## Escalation rules
 
