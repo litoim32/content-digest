@@ -40,6 +40,7 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 - [docs/requirements/feature-002-crypto-dashboard.md](docs/requirements/feature-002-crypto-dashboard.md) — Feature 002 spec
 - [docs/requirements/feature-003-card-animations.md](docs/requirements/feature-003-card-animations.md) — Feature 003 spec
 - [docs/requirements/feature-004-coin-chart-modal.md](docs/requirements/feature-004-coin-chart-modal.md) — Feature 004 spec
+- [docs/requirements/feature-005-auto-refresh.md](docs/requirements/feature-005-auto-refresh.md) — Feature 005 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
@@ -57,7 +58,10 @@ styles in `app/src/components/CryptoDashboard.css`, disabled under
 `CoinChartModal`, which fetches 30 days of prices and draws an inline-SVG line
 chart (no charting library) with the coin name and 30-day high/low; loading and
 error states included. Chart math (`priceRange`, `buildLinePath`) is pure and
-unit-tested in `cryptoView.ts`.
+unit-tested in `cryptoView.ts`. The grid auto-refreshes every 60s (Feature 005):
+it keeps the previous cards on screen while re-fetching, shows a small spinner +
+"Last updated HH:MM:SS" label, and degrades non-destructively if a refresh fails.
+Time formatting (`formatClock`) is pure and unit-tested.
 
 ## Dev server
 

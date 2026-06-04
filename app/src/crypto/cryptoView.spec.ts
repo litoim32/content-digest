@@ -7,6 +7,7 @@ import {
   isPositiveChange,
   priceRange,
   buildLinePath,
+  formatClock,
 } from '@/crypto/cryptoView'
 
 const coin = (over: Partial<Coin>): Coin => ({
@@ -104,5 +105,16 @@ describe('buildLinePath', () => {
   it('respects padding', () => {
     // pad=10 -> x in [10,90], y in [10,90]; rising price: first y=90, last y=10.
     expect(buildLinePath(pts([0, 1], [10, 2]), 100, 100, 10)).toBe('10,90 90,10')
+  })
+})
+
+describe('formatClock', () => {
+  it('formats local time as zero-padded HH:MM:SS', () => {
+    expect(formatClock(new Date(2020, 0, 1, 9, 5, 3))).toBe('09:05:03')
+  })
+
+  it('handles end-of-day and midnight', () => {
+    expect(formatClock(new Date(2020, 0, 1, 23, 59, 9))).toBe('23:59:09')
+    expect(formatClock(new Date(2020, 0, 1, 0, 0, 0))).toBe('00:00:00')
   })
 })

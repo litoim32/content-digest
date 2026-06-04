@@ -6,17 +6,16 @@ import {
   formatUsd,
   formatChange,
   isPositiveChange,
+  formatClock,
 } from '@/crypto/cryptoView'
 import CoinChartModal from '@/components/CoinChartModal'
 import './CryptoDashboard.css'
 
-type LoadState =
-  | { status: 'loading' }
-  | { status: 'error'; message: string }
-  | { status: 'ready'; coins: Coin[] }
-
 const POSITIVE = '#16a34a'
 const NEGATIVE = '#dc2626'
+
+// Auto-refresh cadence.
+const REFRESH_MS = 60_000
 
 // Cap the cascade so later cards don't wait too long to appear.
 const STAGGER_STEP_MS = 40
@@ -67,32 +66,76 @@ function CoinCard({
 }
 
 export default function CryptoDashboard() {
-  const [state, setState] = useState<LoadState>({ status: 'loading' })
+  // `coins === null` means we have never loaded successfully yet. Once we have
+  // data we keep showing it across refreshes, so the screen never goes blank.
+  const [coins, setCoins] = useState<Coin[] | null>(null)
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
+  const [refreshing, setRefreshing] = useState(true)
+  const [refreshFailed, setRefreshFailed] = useState(false)
   const [selected, setSelected] = useState<Coin | null>(null)
 
   useEffect(() => {
-    const controller = new AbortController()
-    getCoins(controller.signal)
-      .then((coins) => setState({ status: 'ready', coins: sortByRank(coins) }))
-      .catch((err: unknown) => {
-        if (controller.signal.aborted) return
-        const message = err instanceof Error ? err.message : 'Failed to load coins.'
-        setState({ status: 'error', message })
-      })
-    return () => controller.abort()
+    let cancelled = false
+    let controller: AbortController | null = null
+
+    const load = () => {
+      controller?.abort()
+      const ctrl = new AbortController()
+      controller = ctrl
+      setRefreshing(true)
+      getCoins(ctrl.signal)
+        .then((data) => {
+          if (cancelled) return
+          setCoins(sortByRank(data))
+          setLastUpdated(new Date())
+          setRefreshFailed(false)
+        })
+        .catch((err: unknown) => {
+          if (cancelled || ctrl.signal.aborted) return
+          setRefreshFailed(true)
+          void err
+        })
+        .finally(() => {
+          if (!cancelled) setRefreshing(false)
+        })
+    }
+
+    load()
+    const id = setInterval(load, REFRESH_MS)
+    return () => {
+      cancelled = true
+      controller?.abort()
+      clearInterval(id)
+    }
   }, [])
 
-  if (state.status === 'loading') {
-    return <p>Loading top coins…</p>
-  }
-  if (state.status === 'error') {
-    return <p style={{ color: NEGATIVE }}>Could not load coins: {state.message}</p>
+  // Very first load only — no prior data to keep on screen.
+  if (coins === null) {
+    return refreshFailed ? (
+      <p style={{ color: NEGATIVE }}>Could not load coins. Retrying every 60s…</p>
+    ) : (
+      <p>Loading top coins…</p>
+    )
   }
 
   return (
     <>
+      <div className="coin-status" aria-live="polite">
+        <span className="coin-status__time">
+          Last updated {lastUpdated ? formatClock(lastUpdated) : '—'}
+        </span>
+        {refreshing && (
+          <span className="coin-status__refresh">
+            <span className="coin-spinner" aria-hidden="true" />
+            Refreshing…
+          </span>
+        )}
+        {refreshFailed && !refreshing && (
+          <span className="coin-status__error">Refresh failed — showing last data</span>
+        )}
+      </div>
       <section className="coin-grid">
-        {state.coins.map((coin, index) => (
+        {coins.map((coin, index) => (
           <CoinCard key={coin.id} coin={coin} index={index} onSelect={setSelected} />
         ))}
       </section>

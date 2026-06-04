@@ -28,6 +28,12 @@ export function isPositiveChange(pct: number): boolean {
   return pct >= 0
 }
 
+/** Local wall-clock time as zero-padded `HH:MM:SS`. */
+export function formatClock(date: Date): string {
+  const pad = (n: number): string => String(n).padStart(2, '0')
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+}
+
 /** Highest and lowest price across a series of points. */
 export function priceRange(points: readonly PricePoint[]): { high: number; low: number } {
   if (points.length === 0) return { high: 0, low: 0 }
