@@ -48,18 +48,24 @@ function CoinCard({
         }
       }}
     >
-      <div className="coin-card__header">
+      <span className="pc-corner pc-corner--tl" aria-hidden="true">
+        <span className="pc-rank">{coin.market_cap_rank}</span>
+        <span className="pc-suit">{coin.symbol}</span>
+      </span>
+
+      <div className="pc-face">
         <img className="coin-logo" src={coin.image} alt={`${coin.name} logo`} />
-        <div>
-          <div className="coin-card__name">{coin.name}</div>
-          <div className="coin-card__symbol">{coin.symbol}</div>
+        <div className="coin-card__name">{coin.name}</div>
+        <div className="coin-card__price">{formatUsd(coin.current_price)}</div>
+        <div className={`coin-card__change ${up ? 'is-up' : 'is-down'}`}>
+          {up ? '▲' : '▼'} {formatChange(coin.price_change_percentage_24h)}
         </div>
-        <span className="coin-card__badge">#{coin.market_cap_rank}</span>
       </div>
-      <div className="coin-card__price">{formatUsd(coin.current_price)}</div>
-      <div className={`coin-card__change ${up ? 'is-up' : 'is-down'}`}>
-        {up ? '▲' : '▼'} {formatChange(coin.price_change_percentage_24h)}
-      </div>
+
+      <span className="pc-corner pc-corner--br" aria-hidden="true">
+        <span className="pc-rank">{coin.market_cap_rank}</span>
+        <span className="pc-suit">{coin.symbol}</span>
+      </span>
     </article>
   )
 }

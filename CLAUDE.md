@@ -44,6 +44,7 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 - [docs/requirements/feature-006-pause-on-hidden.md](docs/requirements/feature-006-pause-on-hidden.md) — Feature 006 spec
 - [docs/requirements/feature-007-resilient-chart-loading.md](docs/requirements/feature-007-resilient-chart-loading.md) — Feature 007 spec
 - [docs/requirements/feature-008-playful-theme.md](docs/requirements/feature-008-playful-theme.md) — Feature 008 spec
+- [docs/requirements/feature-009-playing-card-look.md](docs/requirements/feature-009-playing-card-look.md) — Feature 009 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
@@ -74,7 +75,10 @@ look is a cheerful theme (Feature 008): pastel gradient background, Baloo 2 /
 Nunito fonts (Google Fonts `<link>` in `index.html`), a gradient title with an
 animated emoji, rounded cards with a gradient stripe + colorful hover glow,
 gradient rank badges, and green/red change pills — `index.css` replaced the
-leftover Vite-template styles. Header styles live in `app/src/App.css`.
+leftover Vite-template styles. Header styles live in `app/src/App.css`. Each coin
+card is styled like a playing card (Feature 009): portrait shape, inner border
+frame, mirrored corner rank/symbol indices, and a centred logo/name/price/change
+face. The grid layout is unchanged.
 
 ## Dev server
 
