@@ -39,6 +39,7 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 - [docs/requirements/feature-001-hello-world.md](docs/requirements/feature-001-hello-world.md) — Feature 001 spec
 - [docs/requirements/feature-002-crypto-dashboard.md](docs/requirements/feature-002-crypto-dashboard.md) — Feature 002 spec
 - [docs/requirements/feature-003-card-animations.md](docs/requirements/feature-003-card-animations.md) — Feature 003 spec
+- [docs/requirements/feature-004-coin-chart-modal.md](docs/requirements/feature-004-coin-chart-modal.md) — Feature 004 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
@@ -52,7 +53,11 @@ public CoinGecko API. Pure view helpers in `app/src/crypto/cryptoView.ts` are
 unit-tested; the data adapter is `app/src/api/crypto.ts`. Cards and logos
 animate (Feature 003): staggered fade-in, hover lift, gentle logo float —
 styles in `app/src/components/CryptoDashboard.css`, disabled under
-`prefers-reduced-motion`.
+`prefers-reduced-motion`. Cards are clickable (Feature 004): clicking one opens
+`CoinChartModal`, which fetches 30 days of prices and draws an inline-SVG line
+chart (no charting library) with the coin name and 30-day high/low; loading and
+error states included. Chart math (`priceRange`, `buildLinePath`) is pure and
+unit-tested in `cryptoView.ts`.
 
 ## Dev server
 

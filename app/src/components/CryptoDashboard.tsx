@@ -7,6 +7,7 @@ import {
   formatChange,
   isPositiveChange,
 } from '@/crypto/cryptoView'
+import CoinChartModal from '@/components/CoinChartModal'
 import './CryptoDashboard.css'
 
 type LoadState =
@@ -21,13 +22,34 @@ const NEGATIVE = '#dc2626'
 const STAGGER_STEP_MS = 40
 const STAGGER_MAX_STEPS = 12
 
-function CoinCard({ coin, index }: { coin: Coin; index: number }) {
+function CoinCard({
+  coin,
+  index,
+  onSelect,
+}: {
+  coin: Coin
+  index: number
+  onSelect: (coin: Coin) => void
+}) {
   const up = isPositiveChange(coin.price_change_percentage_24h)
   const delayMs = Math.min(index, STAGGER_MAX_STEPS) * STAGGER_STEP_MS
   // Custom property consumed by .coin-card's animation-delay.
   const enterDelay = { '--enter-delay': `${delayMs}ms` } as CSSProperties
   return (
-    <article className="coin-card" style={enterDelay}>
+    <article
+      className="coin-card"
+      style={enterDelay}
+      role="button"
+      tabIndex={0}
+      aria-label={`Show 30-day price chart for ${coin.name}`}
+      onClick={() => onSelect(coin)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onSelect(coin)
+        }
+      }}
+    >
       <div className="coin-card__header">
         <img className="coin-logo" src={coin.image} alt={`${coin.name} logo`} />
         <div>
@@ -46,6 +68,7 @@ function CoinCard({ coin, index }: { coin: Coin; index: number }) {
 
 export default function CryptoDashboard() {
   const [state, setState] = useState<LoadState>({ status: 'loading' })
+  const [selected, setSelected] = useState<Coin | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -67,10 +90,13 @@ export default function CryptoDashboard() {
   }
 
   return (
-    <section className="coin-grid">
-      {state.coins.map((coin, index) => (
-        <CoinCard key={coin.id} coin={coin} index={index} />
-      ))}
-    </section>
+    <>
+      <section className="coin-grid">
+        {state.coins.map((coin, index) => (
+          <CoinCard key={coin.id} coin={coin} index={index} onSelect={setSelected} />
+        ))}
+      </section>
+      {selected && <CoinChartModal coin={selected} onClose={() => setSelected(null)} />}
+    </>
   )
 }

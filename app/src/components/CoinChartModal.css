@@ -1,0 +1,118 @@
+.coin-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+  animation: coin-modal-fade 0.18s ease-out both;
+}
+
+.coin-modal {
+  background: #fff;
+  border-radius: 14px;
+  width: min(640px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  animation: coin-modal-pop 0.18s ease-out both;
+}
+
+.coin-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.coin-modal__logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.coin-modal__title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.coin-modal__close {
+  margin-left: auto;
+  border: none;
+  background: #f3f4f6;
+  color: #374151;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.coin-modal__close:hover {
+  background: #e5e7eb;
+}
+
+.coin-modal__chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.coin-modal__stats {
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0 0;
+}
+
+.coin-modal__stats dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #6b7280;
+}
+
+.coin-modal__stats dd {
+  margin: 0.1rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.coin-modal__message {
+  padding: 2rem 0;
+  text-align: center;
+  color: #6b7280;
+}
+
+@keyframes coin-modal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes coin-modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coin-modal__backdrop,
+  .coin-modal {
+    animation: none;
+  }
+}

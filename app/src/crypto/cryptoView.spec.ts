@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import type { Coin } from '@/api/crypto'
+import type { Coin, PricePoint } from '@/api/crypto'
 import {
   sortByRank,
   formatUsd,
   formatChange,
   isPositiveChange,
+  priceRange,
+  buildLinePath,
 } from '@/crypto/cryptoView'
 
 const coin = (over: Partial<Coin>): Coin => ({
@@ -66,5 +68,41 @@ describe('isPositiveChange', () => {
 
   it('is false for negative values', () => {
     expect(isPositiveChange(-0.01)).toBe(false)
+  })
+})
+
+const pts = (...p: PricePoint[]): PricePoint[] => p
+
+describe('priceRange', () => {
+  it('returns the max and min price across points', () => {
+    expect(priceRange(pts([0, 10], [1, 30], [2, 20]))).toEqual({ high: 30, low: 10 })
+  })
+
+  it('handles a single point (high === low)', () => {
+    expect(priceRange(pts([0, 42]))).toEqual({ high: 42, low: 42 })
+  })
+})
+
+describe('buildLinePath', () => {
+  it('maps timestamps to x and prices to inverted y within the box', () => {
+    // low=10 -> y=height; high=20 -> y=0; rising price goes up the screen.
+    expect(buildLinePath(pts([0, 10], [10, 20]), 100, 100, 0)).toBe('0,100 100,0')
+  })
+
+  it('draws a flat line through the vertical middle when all prices are equal', () => {
+    expect(buildLinePath(pts([0, 5], [10, 5]), 100, 100, 0)).toBe('0,50 100,50')
+  })
+
+  it('places a single point at the left edge, vertically centered', () => {
+    expect(buildLinePath(pts([0, 5]), 100, 100, 0)).toBe('0,50')
+  })
+
+  it('returns an empty string for no points', () => {
+    expect(buildLinePath(pts(), 100, 100, 0)).toBe('')
+  })
+
+  it('respects padding', () => {
+    // pad=10 -> x in [10,90], y in [10,90]; rising price: first y=90, last y=10.
+    expect(buildLinePath(pts([0, 1], [10, 2]), 100, 100, 10)).toBe('10,90 90,10')
   })
 })
