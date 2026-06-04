@@ -6,7 +6,11 @@ do not silently comply** (see Escalation rules in `CLAUDE.md`).
 
 ## Product scope (from the project interview)
 
-- **No mobile / responsive layout.** Desktop browser only.
+- ~~**No mobile / responsive layout.** Desktop browser only.~~ **Amended in
+  Feature 002** at the user's explicit request: a **fluid/responsive grid** (CSS
+  `grid` with `auto-fill`/`minmax`) is now allowed so views reflow with the
+  window width. Dedicated mobile-specific layouts / breakpoint work remain out of
+  scope unless requested.
 - **No backend or database.** Frontend-only. Any future persistence starts with a
   requirements doc and an ADR.
 - **No authentication / login.**

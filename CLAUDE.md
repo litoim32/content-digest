@@ -37,13 +37,18 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 
 - [docs/requirements/overview.md](docs/requirements/overview.md) — project goal, user, success criteria
 - [docs/requirements/feature-001-hello-world.md](docs/requirements/feature-001-hello-world.md) — Feature 001 spec
+- [docs/requirements/feature-002-crypto-dashboard.md](docs/requirements/feature-002-crypto-dashboard.md) — Feature 002 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
 
 ## Current state
 
-Hello world greeting rendered; no features specced beyond Feature 001 (hello world).
+Feature 002 (Crypto Dashboard) is the main view: a greeting header above a
+responsive grid of top-coin cards (logo, name, symbol, USD price, green/red 24h
+change, rank badge), sorted by market-cap rank, loaded client-side from the
+public CoinGecko API. Pure view helpers in `app/src/crypto/cryptoView.ts` are
+unit-tested; the data adapter is `app/src/api/crypto.ts`.
 
 ## Dev server
 

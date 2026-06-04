@@ -21,8 +21,7 @@
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
 
-    /* Path alias */
-    "baseUrl": ".",
+    /* Path alias (TS 5+ resolves paths relative to this file; no baseUrl needed) */
     "paths": { "@/*": ["./src/*"] },
 
     /* Linting */
