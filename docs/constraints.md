@@ -42,6 +42,9 @@ do not silently comply** (see Escalation rules in `CLAUDE.md`).
 - **Do not loosen TypeScript strictness.** `strict`, `noImplicitAny`,
   `strictNullChecks`, and `noUncheckedIndexedAccess` stay on in every
   `tsconfig*.json`. Narrow the type or guard the value instead.
+- **Do not reintroduce `baseUrl`.** It is deprecated in TypeScript 6 (TS5101) and
+  breaks `npm run build`. The `@/*` path alias works without it — TS 5+ resolves
+  `paths` relative to the tsconfig file. (Found in Feature 002.)
 
 ## Environment note (this machine)
 

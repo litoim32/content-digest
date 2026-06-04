@@ -78,6 +78,7 @@ All run from the **repo root** (they pass through to `app/`):
 ## Self-improvement log
 
 - [001-hello-world](docs/retrospectives/001-hello-world.md) — bootstrap retro; added Windows/toolchain constraints (portable Node, ESLint 10 `eslint .` only, strict flags). Working agreement held.
+- [002-crypto-dashboard](docs/retrospectives/002-crypto-dashboard.md) — crypto dashboard; removed deprecated `baseUrl` (TS6), amended the responsive-layout constraint, kept pure-logic/presentational split (no RTL/ADR).
 
 ## Escalation rules
 
