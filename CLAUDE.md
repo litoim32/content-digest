@@ -98,6 +98,7 @@ All run from the **repo root** (they pass through to `app/`):
 - [003-card-animations](docs/retrospectives/003-card-animations.md) — CSS animations for cards/logos; moved static styling to a CSS file, reduced-motion respected, no new deps.
 - [004-coin-chart-modal](docs/retrospectives/004-coin-chart-modal.md) — clickable cards + inline-SVG 30d chart modal; pure chart math unit-tested; noted CoinGecko 429 rate limits.
 - [005-auto-refresh](docs/retrospectives/005-auto-refresh.md) — 60s self-refresh keeping prior data on screen; split state fields over a union; pure `formatClock` unit-tested.
+- [006-pause-on-hidden](docs/retrospectives/006-pause-on-hidden.md) — pause polling on hidden tab via Page Visibility API; resume with immediate fetch; centralized interval start/stop.
 
 ## Escalation rules
 
