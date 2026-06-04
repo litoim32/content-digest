@@ -43,6 +43,7 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 - [docs/requirements/feature-005-auto-refresh.md](docs/requirements/feature-005-auto-refresh.md) — Feature 005 spec
 - [docs/requirements/feature-006-pause-on-hidden.md](docs/requirements/feature-006-pause-on-hidden.md) — Feature 006 spec
 - [docs/requirements/feature-007-resilient-chart-loading.md](docs/requirements/feature-007-resilient-chart-loading.md) — Feature 007 spec
+- [docs/requirements/feature-008-playful-theme.md](docs/requirements/feature-008-playful-theme.md) — Feature 008 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
@@ -68,7 +69,12 @@ tab is hidden and resumes with an immediate fetch when it becomes visible again
 (Feature 006, Page Visibility API), to ease the CoinGecko rate limit. Chart
 fetching is resilient (Feature 007): a per-session cache, exponential-backoff
 retries on HTTP 429, a rate-limit-specific message, and an optional
-`VITE_COINGECKO_API_KEY` (sent as `x-cg-demo-api-key`) for higher limits.
+`VITE_COINGECKO_API_KEY` (sent as `x-cg-demo-api-key`) for higher limits. The
+look is a cheerful theme (Feature 008): pastel gradient background, Baloo 2 /
+Nunito fonts (Google Fonts `<link>` in `index.html`), a gradient title with an
+animated emoji, rounded cards with a gradient stripe + colorful hover glow,
+gradient rank badges, and green/red change pills — `index.css` replaced the
+leftover Vite-template styles. Header styles live in `app/src/App.css`.
 
 ## Dev server
 

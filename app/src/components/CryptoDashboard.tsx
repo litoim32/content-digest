@@ -11,7 +11,6 @@ import {
 import CoinChartModal from '@/components/CoinChartModal'
 import './CryptoDashboard.css'
 
-const POSITIVE = '#16a34a'
 const NEGATIVE = '#dc2626'
 
 // Auto-refresh cadence.
@@ -58,8 +57,8 @@ function CoinCard({
         <span className="coin-card__badge">#{coin.market_cap_rank}</span>
       </div>
       <div className="coin-card__price">{formatUsd(coin.current_price)}</div>
-      <div className="coin-card__change" style={{ color: up ? POSITIVE : NEGATIVE }}>
-        {formatChange(coin.price_change_percentage_24h)}
+      <div className={`coin-card__change ${up ? 'is-up' : 'is-down'}`}>
+        {up ? '▲' : '▼'} {formatChange(coin.price_change_percentage_24h)}
       </div>
     </article>
   )

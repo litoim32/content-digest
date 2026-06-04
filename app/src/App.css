@@ -1,0 +1,49 @@
+.app {
+  padding: 2.5rem 2rem 3rem;
+}
+
+.app__header {
+  margin-bottom: 1.5rem;
+}
+
+.app__title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  background: linear-gradient(95deg, #7c3aed 0%, #db2777 45%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Keep the emoji in full color (gradient text clipping would hide it). */
+.app__rocket {
+  -webkit-text-fill-color: initial;
+  color: initial;
+  display: inline-block;
+  animation: app-rocket 2.4s ease-in-out infinite;
+}
+
+.app__tagline {
+  margin-top: 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+@keyframes app-rocket {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app__rocket {
+    animation: none;
+  }
+}
