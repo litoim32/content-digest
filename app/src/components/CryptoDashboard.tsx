@@ -7,6 +7,7 @@ import {
   formatChange,
   isPositiveChange,
 } from '@/crypto/cryptoView'
+import './CryptoDashboard.css'
 
 type LoadState =
   | { status: 'loading' }
@@ -16,53 +17,27 @@ type LoadState =
 const POSITIVE = '#16a34a'
 const NEGATIVE = '#dc2626'
 
-const styles = {
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-    gap: '1rem',
-  },
-  card: {
-    border: '1px solid #e5e7eb',
-    borderRadius: 12,
-    padding: '1rem',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    background: '#fff',
-    boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-  },
-  header: { display: 'flex', alignItems: 'center', gap: '0.5rem' },
-  logo: { width: 32, height: 32, borderRadius: '50%' },
-  name: { fontWeight: 600, lineHeight: 1.1 },
-  symbol: { color: '#6b7280', fontSize: '0.8rem', textTransform: 'uppercase' },
-  badge: {
-    marginLeft: 'auto',
-    fontSize: '0.7rem',
-    fontWeight: 600,
-    color: '#374151',
-    background: '#f3f4f6',
-    borderRadius: 999,
-    padding: '0.1rem 0.5rem',
-  },
-  price: { fontSize: '1.25rem', fontWeight: 700 },
-  change: { fontWeight: 600 },
-} satisfies Record<string, CSSProperties>
+// Cap the cascade so later cards don't wait too long to appear.
+const STAGGER_STEP_MS = 40
+const STAGGER_MAX_STEPS = 12
 
-function CoinCard({ coin }: { coin: Coin }) {
+function CoinCard({ coin, index }: { coin: Coin; index: number }) {
   const up = isPositiveChange(coin.price_change_percentage_24h)
+  const delayMs = Math.min(index, STAGGER_MAX_STEPS) * STAGGER_STEP_MS
+  // Custom property consumed by .coin-card's animation-delay.
+  const enterDelay = { '--enter-delay': `${delayMs}ms` } as CSSProperties
   return (
-    <article style={styles.card}>
-      <div style={styles.header}>
-        <img style={styles.logo} src={coin.image} alt={`${coin.name} logo`} />
+    <article className="coin-card" style={enterDelay}>
+      <div className="coin-card__header">
+        <img className="coin-logo" src={coin.image} alt={`${coin.name} logo`} />
         <div>
-          <div style={styles.name}>{coin.name}</div>
-          <div style={styles.symbol}>{coin.symbol}</div>
+          <div className="coin-card__name">{coin.name}</div>
+          <div className="coin-card__symbol">{coin.symbol}</div>
         </div>
-        <span style={styles.badge}>#{coin.market_cap_rank}</span>
+        <span className="coin-card__badge">#{coin.market_cap_rank}</span>
       </div>
-      <div style={styles.price}>{formatUsd(coin.current_price)}</div>
-      <div style={{ ...styles.change, color: up ? POSITIVE : NEGATIVE }}>
+      <div className="coin-card__price">{formatUsd(coin.current_price)}</div>
+      <div className="coin-card__change" style={{ color: up ? POSITIVE : NEGATIVE }}>
         {formatChange(coin.price_change_percentage_24h)}
       </div>
     </article>
@@ -92,9 +67,9 @@ export default function CryptoDashboard() {
   }
 
   return (
-    <section style={styles.grid}>
-      {state.coins.map((coin) => (
-        <CoinCard key={coin.id} coin={coin} />
+    <section className="coin-grid">
+      {state.coins.map((coin, index) => (
+        <CoinCard key={coin.id} coin={coin} index={index} />
       ))}
     </section>
   )
