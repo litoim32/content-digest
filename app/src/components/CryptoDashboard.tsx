@@ -100,12 +100,37 @@ export default function CryptoDashboard() {
         })
     }
 
+    let intervalId: ReturnType<typeof setInterval> | null = null
+    const startInterval = () => {
+      if (intervalId === null) intervalId = setInterval(load, REFRESH_MS)
+    }
+    const stopInterval = () => {
+      if (intervalId !== null) {
+        clearInterval(intervalId)
+        intervalId = null
+      }
+    }
+
+    // Pause polling while the tab is hidden; resume with an immediate refresh.
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        stopInterval()
+        controller?.abort()
+      } else {
+        load()
+        startInterval()
+      }
+    }
+
     load()
-    const id = setInterval(load, REFRESH_MS)
+    startInterval()
+    document.addEventListener('visibilitychange', onVisibilityChange)
+
     return () => {
       cancelled = true
       controller?.abort()
-      clearInterval(id)
+      stopInterval()
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     }
   }, [])
 

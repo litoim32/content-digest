@@ -41,6 +41,7 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 - [docs/requirements/feature-003-card-animations.md](docs/requirements/feature-003-card-animations.md) — Feature 003 spec
 - [docs/requirements/feature-004-coin-chart-modal.md](docs/requirements/feature-004-coin-chart-modal.md) — Feature 004 spec
 - [docs/requirements/feature-005-auto-refresh.md](docs/requirements/feature-005-auto-refresh.md) — Feature 005 spec
+- [docs/requirements/feature-006-pause-on-hidden.md](docs/requirements/feature-006-pause-on-hidden.md) — Feature 006 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
@@ -61,7 +62,9 @@ error states included. Chart math (`priceRange`, `buildLinePath`) is pure and
 unit-tested in `cryptoView.ts`. The grid auto-refreshes every 60s (Feature 005):
 it keeps the previous cards on screen while re-fetching, shows a small spinner +
 "Last updated HH:MM:SS" label, and degrades non-destructively if a refresh fails.
-Time formatting (`formatClock`) is pure and unit-tested.
+Time formatting (`formatClock`) is pure and unit-tested. Refresh pauses while the
+tab is hidden and resumes with an immediate fetch when it becomes visible again
+(Feature 006, Page Visibility API), to ease the CoinGecko rate limit.
 
 ## Dev server
 
