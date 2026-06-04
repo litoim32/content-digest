@@ -103,6 +103,7 @@ All run from the **repo root** (they pass through to `app/`):
 - [004-coin-chart-modal](docs/retrospectives/004-coin-chart-modal.md) — clickable cards + inline-SVG 30d chart modal; pure chart math unit-tested; noted CoinGecko 429 rate limits.
 - [005-auto-refresh](docs/retrospectives/005-auto-refresh.md) — 60s self-refresh keeping prior data on screen; split state fields over a union; pure `formatClock` unit-tested.
 - [006-pause-on-hidden](docs/retrospectives/006-pause-on-hidden.md) — pause polling on hidden tab via Page Visibility API; resume with immediate fetch; centralized interval start/stop.
+- [007-resilient-chart-loading](docs/retrospectives/007-resilient-chart-loading.md) — diagnosed chart 429s; added cache + backoff retry + `HttpError` + opt-in demo key. External rate limit, not a render bug.
 
 ## Escalation rules
 
