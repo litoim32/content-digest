@@ -8,6 +8,7 @@ import {
   priceRange,
   buildLinePath,
   formatClock,
+  backoffMs,
 } from '@/crypto/cryptoView'
 
 const coin = (over: Partial<Coin>): Coin => ({
@@ -116,5 +117,13 @@ describe('formatClock', () => {
   it('handles end-of-day and midnight', () => {
     expect(formatClock(new Date(2020, 0, 1, 23, 59, 9))).toBe('23:59:09')
     expect(formatClock(new Date(2020, 0, 1, 0, 0, 0))).toBe('00:00:00')
+  })
+})
+
+describe('backoffMs', () => {
+  it('grows exponentially from 1s', () => {
+    expect(backoffMs(0)).toBe(1000)
+    expect(backoffMs(1)).toBe(2000)
+    expect(backoffMs(2)).toBe(4000)
   })
 })

@@ -28,6 +28,11 @@ export function isPositiveChange(pct: number): boolean {
   return pct >= 0
 }
 
+/** Exponential backoff delay for retry `attempt` (0-based): 1s, 2s, 4s, … */
+export function backoffMs(attempt: number): number {
+  return 1000 * 2 ** attempt
+}
+
 /** Local wall-clock time as zero-padded `HH:MM:SS`. */
 export function formatClock(date: Date): string {
   const pad = (n: number): string => String(n).padStart(2, '0')

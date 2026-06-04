@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { getMarketChart, type Coin, type PricePoint } from '@/api/crypto'
+import { getMarketChart, HttpError, type Coin, type PricePoint } from '@/api/crypto'
 import { priceRange, buildLinePath, formatUsd } from '@/crypto/cryptoView'
 import './CoinChartModal.css'
 
 type ChartState =
   | { status: 'loading' }
-  | { status: 'error' }
+  | { status: 'error'; rateLimited: boolean }
   | { status: 'ready'; points: PricePoint[] }
 
 const POSITIVE = '#16a34a'
@@ -68,8 +68,8 @@ export default function CoinChartModal({
       .then((points) => setState({ status: 'ready', points }))
       .catch((err: unknown) => {
         if (controller.signal.aborted) return
-        setState({ status: 'error' })
-        void err
+        const rateLimited = err instanceof HttpError && err.status === 429
+        setState({ status: 'error', rateLimited })
       })
     return () => controller.abort()
   }, [coin.id])
@@ -110,7 +110,10 @@ export default function CoinChartModal({
         )}
         {state.status === 'error' && (
           <p className="coin-modal__message">
-            Couldn’t load the chart for {coin.name}. Please try again in a moment.
+            {state.rateLimited
+              ? 'CoinGecko’s free tier is rate-limiting chart requests right now. ' +
+                'Please try again in a minute.'
+              : `Couldn’t load the chart for ${coin.name}. Please try again in a moment.`}
           </p>
         )}
         {state.status === 'ready' && <Chart points={state.points} />}

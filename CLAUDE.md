@@ -42,6 +42,7 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 - [docs/requirements/feature-004-coin-chart-modal.md](docs/requirements/feature-004-coin-chart-modal.md) — Feature 004 spec
 - [docs/requirements/feature-005-auto-refresh.md](docs/requirements/feature-005-auto-refresh.md) — Feature 005 spec
 - [docs/requirements/feature-006-pause-on-hidden.md](docs/requirements/feature-006-pause-on-hidden.md) — Feature 006 spec
+- [docs/requirements/feature-007-resilient-chart-loading.md](docs/requirements/feature-007-resilient-chart-loading.md) — Feature 007 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
@@ -64,7 +65,10 @@ it keeps the previous cards on screen while re-fetching, shows a small spinner +
 "Last updated HH:MM:SS" label, and degrades non-destructively if a refresh fails.
 Time formatting (`formatClock`) is pure and unit-tested. Refresh pauses while the
 tab is hidden and resumes with an immediate fetch when it becomes visible again
-(Feature 006, Page Visibility API), to ease the CoinGecko rate limit.
+(Feature 006, Page Visibility API), to ease the CoinGecko rate limit. Chart
+fetching is resilient (Feature 007): a per-session cache, exponential-backoff
+retries on HTTP 429, a rate-limit-specific message, and an optional
+`VITE_COINGECKO_API_KEY` (sent as `x-cg-demo-api-key`) for higher limits.
 
 ## Dev server
 
