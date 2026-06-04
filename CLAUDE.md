@@ -89,6 +89,7 @@ All run from the **repo root** (they pass through to `app/`):
 - [001-hello-world](docs/retrospectives/001-hello-world.md) — bootstrap retro; added Windows/toolchain constraints (portable Node, ESLint 10 `eslint .` only, strict flags). Working agreement held.
 - [002-crypto-dashboard](docs/retrospectives/002-crypto-dashboard.md) — crypto dashboard; removed deprecated `baseUrl` (TS6), amended the responsive-layout constraint, kept pure-logic/presentational split (no RTL/ADR).
 - [003-card-animations](docs/retrospectives/003-card-animations.md) — CSS animations for cards/logos; moved static styling to a CSS file, reduced-motion respected, no new deps.
+- [004-coin-chart-modal](docs/retrospectives/004-coin-chart-modal.md) — clickable cards + inline-SVG 30d chart modal; pure chart math unit-tested; noted CoinGecko 429 rate limits.
 
 ## Escalation rules
 
