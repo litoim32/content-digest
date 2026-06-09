@@ -32,6 +32,53 @@
   color: #6b7280;
 }
 
+.app__nav {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.3rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.app__tab {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.app__tab:hover {
+  color: #6d28d9;
+}
+
+.app__tab.is-active {
+  color: #fff;
+  background: linear-gradient(95deg, #7c3aed 0%, #db2777 100%);
+  box-shadow: 0 4px 12px rgba(219, 39, 119, 0.25);
+}
+
+.app__tab:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app__tab {
+    transition: none;
+  }
+}
+
 @keyframes app-rocket {
   0%,
   100% {
