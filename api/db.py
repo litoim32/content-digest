@@ -53,3 +53,14 @@ def init_db() -> None:
     with get_pool().connection() as conn:
         for statement in statements:
             conn.execute(statement)
+
+
+_initialized = False
+
+
+def ensure_schema() -> None:
+    """Run init_db() once per process (cheap no-op afterwards)."""
+    global _initialized
+    if not _initialized:
+        init_db()
+        _initialized = True
