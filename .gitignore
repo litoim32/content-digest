@@ -32,3 +32,12 @@ dist-ssr/
 
 # tests / coverage
 coverage/
+
+# python (api/)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# vercel
+.vercel/
