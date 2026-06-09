@@ -28,3 +28,9 @@ export interface DigestCard extends DigestResult {
 
 /** Payload to create a card (server assigns id + createdAt). */
 export type NewCard = Omit<DigestCard, 'id' | 'createdAt'>
+
+/** A non-empty group of cards sharing one category, for board rendering. */
+export interface Section {
+  category: Category
+  cards: DigestCard[]
+}
