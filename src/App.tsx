@@ -1,7 +1,15 @@
+import { useState } from 'react'
+import AddDigestForm, { type DigestInput } from '@/components/AddDigestForm'
 import DigestBoard from '@/components/DigestBoard'
 import './App.css'
 
 export default function App() {
+  // Interim: hold raw captured inputs so the form's callback is observable.
+  // Issue #5 turns each into a real digest; issue #3 groups them into a board.
+  const [entries, setEntries] = useState<DigestInput[]>([])
+
+  const addEntry = (input: DigestInput) => setEntries((prev) => [input, ...prev])
+
   return (
     <main className="app">
       <header className="app__header">
@@ -10,9 +18,8 @@ export default function App() {
         </h1>
         <p className="app__tagline">Paste an article → get a tidy digest card ✨</p>
       </header>
-      {/* The add-article form (issue #12) and the live topic board (issues #2/#3)
-          land here. For now the board renders its empty state. */}
-      <DigestBoard />
+      <AddDigestForm onSubmit={addEntry} />
+      <DigestBoard entries={entries} />
     </main>
   )
 }
