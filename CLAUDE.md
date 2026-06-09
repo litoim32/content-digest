@@ -45,13 +45,31 @@ Governance files live at the root and **never** inside `app/`. App code lives un
 - [docs/requirements/feature-007-resilient-chart-loading.md](docs/requirements/feature-007-resilient-chart-loading.md) — Feature 007 spec
 - [docs/requirements/feature-008-playful-theme.md](docs/requirements/feature-008-playful-theme.md) — Feature 008 spec
 - [docs/requirements/feature-009-playing-card-look.md](docs/requirements/feature-009-playing-card-look.md) — Feature 009 spec
+- [docs/requirements/feature-010-content-digest.md](docs/requirements/feature-010-content-digest.md) — Feature 010 spec
 - [docs/decisions/001-agent-structure.md](docs/decisions/001-agent-structure.md) — ADR: root-vs-`app/` split
+- [docs/decisions/002-view-toggle.md](docs/decisions/002-view-toggle.md) — ADR: multiple views via state, no router
+- [docs/decisions/003-local-persistence.md](docs/decisions/003-local-persistence.md) — ADR: `localStorage` persistence (amends "no persistence")
+- [docs/decisions/004-dev-extract-middleware.md](docs/decisions/004-dev-extract-middleware.md) — ADR: dev-only `/api/extract` article fetch
 - [docs/constraints.md](docs/constraints.md) — what NOT to do
 - [docs/retrospectives/](docs/retrospectives/) — one retro per feature
 
 ## Current state
 
-Feature 002 (Crypto Dashboard) is the main view: a greeting header above a
+The app has **two views** switched by a header pill nav (`App.tsx`,
+[ADR 002](docs/decisions/002-view-toggle.md)): **Content Digest** (default) and the
+**Crypto Dashboard**. Feature 010 (Content Digest) lets you paste an article's text
+(+ optional URL) and get a card with a **summary, key points, tags, and a suggested
+category**, placed on a **board grouped into topic sections**. The "AI" is a local,
+deterministic, offline heuristic — pure modules under `app/src/digest/`
+(`text.ts`, `extract.ts`, `digest.ts`, `board.ts`) are unit-tested; rendering is in
+`AddDigestForm` / `DigestBoard`, with `ContentDigest` owning state and
+`localStorage` persistence ([ADR 003](docs/decisions/003-local-persistence.md)). A
+**dev-only** Vite middleware `/api/extract`
+([ADR 004](docs/decisions/004-dev-extract-middleware.md)) fetches article text
+server-side during `npm run dev`; in `build`/`preview` the form degrades to manual
+paste. A Claude-API summarizer is a documented Phase-2 drop-in.
+
+Feature 002 (Crypto Dashboard) is the second view: a greeting header above a
 responsive grid of top-coin cards (logo, name, symbol, USD price, green/red 24h
 change, rank badge), sorted by market-cap rank, loaded client-side from the
 public CoinGecko API. Pure view helpers in `app/src/crypto/cryptoView.ts` are
@@ -116,6 +134,7 @@ All run from the **repo root** (they pass through to `app/`):
 - [007-resilient-chart-loading](docs/retrospectives/007-resilient-chart-loading.md) — diagnosed chart 429s; added cache + backoff retry + `HttpError` + opt-in demo key. External rate limit, not a render bug.
 - [008-playful-theme](docs/retrospectives/008-playful-theme.md) — cheerful theme (fonts, gradient bg, badge/pill colors); rewrote leftover template `index.css`; change colour moved to `is-up`/`is-down` classes.
 - [009-playing-card-look](docs/retrospectives/009-playing-card-look.md) — cards styled as playing cards (corner indices + centred face); asked first among 3 interpretations; grid unchanged.
+- [010-content-digest](docs/retrospectives/010-content-digest.md) — second view (paste article → summary/points/tags/category card on a topic board); local heuristic summarizer; ADRs 002 (view toggle), 003 (localStorage), 004 (dev extract middleware); pure/presentational split held, 40 new tests.
 
 ## Escalation rules
 

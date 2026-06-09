@@ -11,10 +11,14 @@ do not silently comply** (see Escalation rules in `CLAUDE.md`).
   `grid` with `auto-fill`/`minmax`) is now allowed so views reflow with the
   window width. Dedicated mobile-specific layouts / breakpoint work remain out of
   scope unless requested.
-- **No backend or database.** Frontend-only. Any future persistence starts with a
-  requirements doc and an ADR.
+- **No backend or database.** Frontend-only. **Amended in Feature 010**
+  ([ADR 003](decisions/003-local-persistence.md)): client-side `localStorage`
+  persistence is allowed. There is still no server and no database — cross-device /
+  server-side storage remains out of scope and would need its own doc + ADR.
 - **No authentication / login.**
-- **No internationalization or theming.**
+- **No internationalization or theming.** (Note: Feature 010 uses uk+en word lists
+  for *content processing* of pasted articles — this is not UI i18n; the UI stays
+  English.)
 
 ## Workflow constraints
 
